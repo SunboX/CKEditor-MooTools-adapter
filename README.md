@@ -9,7 +9,7 @@ Plugin exposes some of editor's event to MooTools event system.
 
 Demo
 ---
-You can see an online demo in this shell: http://jsfiddle.net/PkFGe/
+You can see an online demo in this shell: [http://jsfiddle.net/PkFGe/](http://jsfiddle.net/PkFGe/)
 
 
 Example
