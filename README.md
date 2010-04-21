@@ -7,26 +7,31 @@ Every element can be converted to working editor.
 Plugin exposes some of editor's event to MooTools event system.
 
 
+Demo
+---
+You can see an online demo in this shell: http://jsfiddle.net/PkFGe/
+
+
 Example
 ---
 
- <script src="mootools.js"></script>
- <script src="ckeditor.js"></script>
- <script src="adapters/mootools.js"></script>
- <script type="text/javascript">
+ 	<script src="mootools.js"></script>
+ 	<script src="ckeditor.js"></script>
+ 	<script src="adapters/mootools.js"></script>
+ 	<script type="text/javascript">
  
- window.addEvent('domready', function(){
+ 		window.addEvent('domready', function(){
 	
-	$('mootools_ckeditor').addEvent('ckeditorReady', function(editor){
-		alert('CKEditor loaded');
-	});
+			$('mootools_ckeditor').addEvent('ckeditorReady', function(editor){
+				alert('CKEditor loaded');
+				});
 		
-	// Initialize the editor.
-	$('mootools_ckeditor').ckeditor();
+				// Initialize the editor.
+				$('mootools_ckeditor').ckeditor();
 	
- });
+ 		});
  
- </script>
+ 	</script>
 
 
 License

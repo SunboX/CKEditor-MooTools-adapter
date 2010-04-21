@@ -26,14 +26,40 @@ CKEDITOR.config.mootoolsOverrideVal = CKEDITOR.config.mootoolsOverrideVal || tru
 // New set/get value method for elements
 if (CKEDITOR.config.mootoolsOverrideVal){
 	
+	CKEDITOR.on('instanceCreated', function(event){
+		var editor = event.editor;
+		(function(){
+			if (!editor.element){
+				arguments.callee.delay(100);
+				return;
+			}	
+		
+			// Fire load event
+			editor.element.$.fireEvent('ckeditorLoad', editor);
+		}).delay(0);
+	}, null, null, 9999);
+	
 	CKEDITOR.on('instanceReady', function(event){
 		var editor = event.editor;
 		(function(){
 			if (!editor.element){
 				arguments.callee.delay(100);
 				return;
-			}
-			editor.element.fireEvent('ckeditorLoad', editor);
+			}	
+
+			// Forward setData on dataReady
+			editor.on('dataReady', function(){
+				editor.element.$.fireEvent('ckeditorDataReady', editor);
+			});
+
+			// Forward getData
+			editor.on('getData', function(event){
+				editor.element.$.fireEvent('ckeditorGetData', [editor, event.data]);
+			}, 999);
+			
+			// Fire ready event
+			editor.element.$.fireEvent('ckeditorReady', editor);
+			
 		}).delay(0);
 	}, null, null, 9999);
 	
@@ -68,8 +94,7 @@ if (CKEDITOR.config.mootoolsOverrideVal){
 				config = config || this.retrieve('ckeditor:config') || {};
 				
 				// Handle config.autoUpdateElement inside this plugin if desired
-				if (config.autoUpdateElement || (!config.autoUpdateElement && CKEDITOR.config.autoUpdateElement))
-				{
+				if (config.autoUpdateElement || (!config.autoUpdateElement && CKEDITOR.config.autoUpdateElement)){
 					config.autoUpdateElementMootools = true;
 				}
 				
@@ -79,6 +104,11 @@ if (CKEDITOR.config.mootoolsOverrideVal){
 				this.set('ckeditor', config);
 				
 				var editor = CKEDITOR.replace(this, config);
+
+				// Forward destroy event
+				editor.on('destroy', function(event){
+					element.fireEvent('ckeditorDestroy', event.editor);
+				});
 				
 				// Register callback
 				editor.on('instanceReady', function(event){
@@ -92,21 +122,6 @@ if (CKEDITOR.config.mootoolsOverrideVal){
 
 						// Remove this listener
 						event.removeListener('instanceReady', this.callee);
-
-						// Forward setData on dataReady
-						editor.on('dataReady', function(){
-							element.fireEvent('ckeditorDataReady', editor);
-						});
-
-						// Forward getData
-						editor.on('getData', function(event){
-							element.fireEvent('ckeditorGetData', [editor, event.data]);
-						}, 999);
-
-						// Forward destroy event
-						editor.on('destroy', function(){
-							element.fireEvent('ckeditorDestroy', editor);
-						});
 
 						// Integrate with form submit
 						var form = element.getParent('form');
@@ -131,9 +146,7 @@ if (CKEDITOR.config.mootoolsOverrideVal){
 
 						// Remove lock
 						element.eliminate('ckeditor:lock');
-
-						// Fire ready event
-						element.fireEvent('ckeditorReady', editor);
+						
 					}).delay(0);
 				}, null, null, 9999);
 				
