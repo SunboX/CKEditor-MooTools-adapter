@@ -6,12 +6,6 @@ MooTools adapter for the famous [CKEditor](http://ckeditor.com/) provides easy u
 Every element can be converted to working editor.
 Plugin exposes some of editor's event to MooTools event system.
 
-Demo
----
-
-You can see a demo in this shell: http://jsfiddle.net/PkFGe/
-
-
 
 Example
 ---
