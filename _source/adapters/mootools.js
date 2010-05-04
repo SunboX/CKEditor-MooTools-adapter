@@ -66,16 +66,16 @@ if (CKEDITOR.config.mootoolsOverrideVal){
 	Element.Properties.value = {
 		
 		set: function(key, value, forceNative){
-			var editor = this.get('ckeditor');
-			if (this.hasOwnProperty(key) && (forceNative || !editor)) this[key] = value;
-			else editor.setData(value);
+			if (this.hasOwnProperty(key)){
+				if(!this.retrieve('ckeditor') || forceNative) this[key] = value;
+				else this.get('ckeditor').setData(value);
+			}
 			return this;
 		},
 		
 		get: function(key, forceNative){
-			var editor = this.get('ckeditor');
-			if(forceNative || !editor) return this.hasOwnProperty(key) ? this[key] : null;
-			return editor.getData();
+			if(!this.retrieve('ckeditor') || forceNative) return this.hasOwnProperty(key) ? this[key] : null;
+			return this.get('ckeditor').getData();
 		}
 	};
 	
