@@ -66,17 +66,17 @@ if (CKEDITOR.config.mootoolsOverrideVal){
 	Element.Properties.value = {
 		
 		set: function(key, value, forceNative){
-			if (this.tagName.match(/select/i)) this[key] = value;
+			if (this.tagName.match(/select/i)) this.value = value;
 			if (this.hasOwnProperty(key)){
-				if(!this.retrieve('ckeditor') || forceNative) this[key] = value;
+				if(!this.retrieve('ckeditor') || forceNative) this.value = value;
 				else this.get('ckeditor').setData(value);
 			}
 			return this;
 		},
 		
 		get: function(key, forceNative){
-			if (this.tagName.match(/select/i)) return this[key];
-			if (!this.retrieve('ckeditor') || forceNative) return this.hasOwnProperty(key) ? this[key] : null;
+			if (this.tagName.match(/select/i)) return this.value;
+			if (!this.retrieve('ckeditor') || forceNative) return this.hasOwnProperty(key) ? this.value : null;
 			return this.get('ckeditor').getData();
 		}
 	};
