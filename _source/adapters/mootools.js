@@ -65,9 +65,9 @@ if (CKEDITOR.config.mootoolsOverrideVal){
 	
 	Element.Properties.value = {
 		
-		set: function(key, value, forceNative){
+		set: function(value, forceNative){
 			if (this.tagName.match(/select/i)) this.value = value;
-			if (this.hasOwnProperty(key)){
+			if (this.hasOwnProperty('value')){
 				if(!this.retrieve('ckeditor') || forceNative) this.value = value;
 				else this.get('ckeditor').setData(value);
 			}
