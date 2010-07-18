@@ -66,18 +66,25 @@ if (CKEDITOR.config.mootoolsOverrideVal){
 	Element.Properties.value = {
 		
 		set: function(value, forceNative){
-			if (this.tagName.match(/select/i)) this.value = value;
-			if (this.hasOwnProperty('value')){
-				if(!this.retrieve('ckeditor') || forceNative) this.value = value;
-				else this.get('ckeditor').setData(value);
-			}
+			if(!this.retrieve('ckeditor', false) || forceNative) this.value = value;
+			else this.get('ckeditor').setData(value);
 			return this;
 		},
 		
 		get: function(key, forceNative){
-			if (this.tagName.match(/select/i)) return this.value;
-			if (!this.retrieve('ckeditor') || forceNative) return this.hasOwnProperty(key) ? this.value : null;
-			return this.get('ckeditor').getData();
+			switch (Element.get(this, 'tag')){
+				case 'select':
+					var values = [];
+					Array.each(this.options, function(option){
+						if (option.selected) values.push(option.value);
+					});
+					return (this.multiple) ? values : values[0];
+				case 'input':
+					if (['checkbox', 'radio'].contains(this.type) && !this.checked) return false;
+				default: 
+					if (!this.retrieve('ckeditor') || forceNative) return $pick(this.value, false);
+					return this.get('ckeditor').getData();
+			}
 		}
 	};
 	
